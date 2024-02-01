@@ -10,30 +10,77 @@
 // The most outer function represents the left operand, the most inner function represents the right operand
 // Division should be integer division. For example, this should return 2, not 2.666666...:
 // eight(dividedBy(three()));
-const zero = (oper) => {
-    if(oper == undefined) {
-        return 0;
-    } else if (oper == plus) {
-        return 0 + oper;
-    } else if (oper == minus) {
-        return 0 - oper;
+/**
+ * offloaded func to check if num func has the operation in arg, otherwise pass just the num
+ * @param {}} num - if no func given, pass this num as right operand
+ * @param {*} oper - anon func in operation, w/ num as left operand
+ * @returns - either just num or anon func w/ left num
+ */
+const checkNum = (num, oper) => {
+    if (oper == undefined) {
+        return num;
+    } else {
+        return oper(num);
     }
 };
-const one = () => { return 1 };
-const two = () => { return 2 };
-const three = () => { return 3 };
-const four = () => { return 4 };
-const five = () => { return 5 };
-const six = () => { return 6 };
-const seven = () => { return 7 };
-const eight = () => { return 8 };
-const nine = () => { return 9 };
-
-const plus = (right) => {
-    return right;
+/**
+ * num func that utilize checkNum with that specific num
+ * @param {*} oper - passes the func arg to the operation
+ * @returns - the return of checkNum
+ */
+const zero = oper => { 
+    return checkNum(0, oper);
 };
-function minus() {}
-function times() {}
-function dividedBy() {}
-
-console.log(zero(plus(three())));
+const one = oper => {
+    return checkNum(1, oper);
+};
+const two = oper => {
+    return checkNum(2, oper);
+};
+const three = oper => {
+    return checkNum(3, oper);
+};
+const four = oper => {
+    return checkNum(4, oper);
+};
+const five = oper => {
+    return checkNum(5, oper);
+};
+const six = oper => {
+    return checkNum(6, oper);
+};
+const seven = oper => {
+    return checkNum(7, oper);
+};
+const eight = oper => {
+    return checkNum(8, oper);
+};
+const nine = oper => {
+    return checkNum(9, oper);
+};
+/**
+ * operation func used in arg of checkNum func
+ * @param {} right - num func returning w/ just the num
+ * @param {} left - returned from checkNum oper that is passed eg "left = oper(left)"
+ * @returns - left is passed (num) when checkNum finds the oper func called, to operate w/ right
+ */
+const plus = right => {
+    return ( left => {
+        return left + right;
+    });
+}
+const minus = right => {
+    return ( left => {
+        return left - right;
+    });
+};
+const times = right => {
+    return ( left => {
+        return left * right;
+    });
+};
+const dividedBy = right => {
+    return ( left => {
+        return parseInt(left / right);
+    });
+}
